@@ -10,6 +10,7 @@ import org.apache.kerby.config.Conf;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 
@@ -67,6 +68,25 @@ public class MyFileUtil {
         }
 
         FileUtil.copy(fs, sourcePath, fs, destinationPath, false, conf);
+
+        fs.close();
+    }
+
+    public static void uploadFiles(String hdfsPath, String localPath) throws IOException {
+        Path destinationPath = new Path(hdfsPath);
+        FileSystem fs = FileSystem.get(conf);
+        if (!fs.exists(destinationPath)) {
+            fs.mkdirs(destinationPath);
+        }
+
+        File file = new File(localPath);
+        if (file.isDirectory()) {
+            File[] files = file.listFiles();
+            for (File file1 : files) {
+                Path sourcePath = new Path(localPath + file1.getName());
+                fs.copyFromLocalFile(sourcePath, destinationPath);
+            }
+        }
 
         fs.close();
     }
