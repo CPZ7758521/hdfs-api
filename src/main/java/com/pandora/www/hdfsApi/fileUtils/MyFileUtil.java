@@ -2,6 +2,7 @@ package com.pandora.www.hdfsApi.fileUtils;
 
 import com.pandora.www.hdfsApi.config.Config;
 import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.FileStatus;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.FileUtil;
 import org.apache.hadoop.fs.Path;
@@ -89,5 +90,21 @@ public class MyFileUtil {
         }
 
         fs.close();
+    }
+
+    public static long getHdfsFileSize(String hdfsPath) throws IOException {
+        Path destinationPath = new Path(hdfsPath);
+        FileSystem fs = FileSystem.get(conf);
+        FileStatus[] fileStatuses = fs.listStatus(destinationPath);
+
+        long totalSize = 0L;
+
+        for (FileStatus fileStatus : fileStatuses) {
+            if (fileStatus.isFile()) {
+                totalSize += fileStatus.getLen();
+            }
+        }
+        fs.close();
+        return totalSize;
     }
 }
