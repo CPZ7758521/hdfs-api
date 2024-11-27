@@ -22,7 +22,7 @@ public class MyFileUtil {
     static {
         try {
             URL krb5Url = MyFileUtil.class.getClassLoader().getResource(Config.env + "/krb5.conf");
-            URL keytabUrl = MyFileUtil.class.getClassLoader().getResource(Config.env + "kerberos.keytab");
+            URL keytabUrl = MyFileUtil.class.getClassLoader().getResource(Config.env + "/kerberos.keytab");
 
             String krb5ConfPath = krb5Url.getPath();
             String keytabUrlPath = keytabUrl.getPath();
